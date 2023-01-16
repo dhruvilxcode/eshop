@@ -15,6 +15,8 @@ const productSchema = new mongoose.Schema({
     description: {
         type: String // use editorjs or similar
     },
+    // TODO: add product variants
+    // TODO: Size chart optional
     photos: [
         {
             secure_url: {
