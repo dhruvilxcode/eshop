@@ -48,3 +48,46 @@ export const signUp = async (req, res) => {
         user
     });
 }
+
+
+/******************************************************
+ * @LOGIN
+ * @route /api/auth/login
+ * @description User signIn Controller for loging new user
+ * @parameters  email, password
+ * @returns token, User Object
+ ******************************************************/
+
+export const login = async (req, res) => {
+    const {email, password} = req.body;
+
+    if(!(email && password)) {
+        return res.status(400).json({
+            message: "Please fill all details"
+        });
+    }
+
+    const user = await User.findOne({email}).select("+password");
+
+    if(!user) {
+        return res.status(400).json({
+            message: "Invalid credentials"
+        });
+    }
+
+    const isPasswordMatched = await user.comparePassword(password);
+
+    if(isPasswordMatched) {
+        const token = user.generateJWT();
+        user.password = undefined;
+        return res.cookie("token", token, cookieOptions).status(200).json({
+            success: true,
+            token,
+            user
+        });
+    }
+
+    return res.status(400).json({
+        message: "email or password is wrong!"
+    });
+};
