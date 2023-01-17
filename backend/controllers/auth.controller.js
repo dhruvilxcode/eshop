@@ -112,3 +112,58 @@ export const logout = async (req, res) => {
     });
 }
 
+/******************************************************
+ * @FORGOT_PASSWORD
+ * @route http://localhost:5000/api/auth/password/forgot
+ * @description User will submit email and we will generate a token
+ * @parameters  email
+ * @returns success message - email send
+ ******************************************************/
+
+export const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+
+    if(!email) {
+        return res.status(400).json({
+            message: "Please provide required details"
+        });
+    }
+
+    const user = await User.findOne({ email: email });
+
+    if(!user) {
+        return res.status(400).json({
+            message: "User not found!"
+        });
+    }
+
+    const resetToken = user.generateForgotPasswordToken();
+
+    await user.save({ validateBeforeSave: false });
+
+    const resetURL = `${req.protocol}://${req.get("host")}/api/auth/password/reset/${resetToken}`;
+
+    const text = `Click on the link to reset your password.\n\n${resetURL}\n\n`;
+
+    try {
+        await mailHelper({
+            email: user.email,
+            subject: "Password reset",
+            html: text,
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: `Email sent to ${user.email}`
+        });
+    } catch (error) {
+        user.forgotPasswordToken = undefined;
+        user.forgotPasswordExpiry = undefined;
+        
+        await user.save({validateBeforeSave: false});
+
+        return res.status(500).json({
+            message: "email sending failed"
+        });
+    }
+}
