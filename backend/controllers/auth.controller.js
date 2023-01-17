@@ -167,3 +167,49 @@ export const forgotPassword = async (req, res) => {
         });
     }
 }
+
+/******************************************************
+ * @RESET_PASSWORD
+ * @route http://localhost:5000/api/auth/password/reset/:resetToken
+ * @description User will be able to reset/change password based on url token
+ * @parameters  token from url, password and confirmpass
+ * @returns User object
+ ******************************************************/
+
+export const resetPassword = async (req, res) => {
+    const {token: resetToken} = req.params;
+    const {password, confirmPassword} = req.body;
+
+    const resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest('hex');
+
+    const user = await User.findOne({
+        forgotPasswordToken: resetPasswordToken,
+        forgotPasswordExpiry: { $gt: Date.now() }
+    });
+
+    if(!user) {
+        return res.status(400).json({
+            message: 'password token is invalid or already expired'
+        });
+    }
+
+    if(password !== confirmPassword) {
+        return res.status(400).json({
+            message: "Password does not match to confirm password"
+        });
+    }
+
+    user.password = password;
+    user.forgotPasswordExpiry = undefined;
+    user.forgotPasswordToken = undefined;
+
+    await user.save();
+    
+    const token = user.generateJWT();
+    user.password = undefined;
+
+    return res.cookie("token", token, cookieOptions).status(200).json({
+        success: true,
+        user
+    });
+}
