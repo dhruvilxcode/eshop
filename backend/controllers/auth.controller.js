@@ -213,3 +213,27 @@ export const resetPassword = async (req, res) => {
         user
     });
 }
+
+/******************************************************
+ * @GET_PROFILE
+ * @REQUEST_TYPE GET
+ * @route http://localhost:5000/api/auth/profile
+ * @description check for token and populate req.user
+ * @parameters 
+ * @returns User Object
+ ******************************************************/
+
+export const getProfile = async (req, res) => {
+    const {user} = req;
+
+    if(!user) {
+        return res.status(404).json({
+            message: "User not found"
+        });
+    }
+
+    return res.status(200).json({
+        success: true,
+        user
+    })
+};
