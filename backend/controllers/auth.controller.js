@@ -91,3 +91,24 @@ export const login = async (req, res) => {
         message: "email or password is wrong!"
     });
 };
+
+/******************************************************
+ * @LOGOUT
+ * @route http://localhost:5000/api/auth/logout
+ * @description User logout bby clearing user cookies
+ * @parameters  
+ * @returns success message
+ ******************************************************/
+
+export const logout = async (req, res) => {
+    return res.cookie("token", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true,
+    })
+    .status(200)
+    .json({
+        success: true,
+        message: "Log out successful."
+    });
+}
+
