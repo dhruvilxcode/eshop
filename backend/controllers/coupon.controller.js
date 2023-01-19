@@ -126,3 +126,47 @@ export const deleteCoupon = async (req, res) => {
  * @description Only admin and Moderator can get all the coupons
  * @returns allCoupons Object
  *********************************************************/
+export const getAllCoupons = async (req, res) => {
+    try {
+        const coupons = await Coupon.find({});
+
+        return res.status(200).json(coupons);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong while getting details."
+        });
+    }
+}
+
+/**********************************************************
+ * @GET_COUPON
+ * @route https://localhost:5000/api/coupon/:code
+ * @description Controller used for getting one coupon details
+ * @description user can get coupon detail by applying on checkout
+ * @returns coupon Object
+ *********************************************************/
+export const getCouponDetails = async (req, res) => {
+    try {
+        const {code} = req.params;
+        const coupon = await Coupon.findOne({
+            code
+        });
+
+        if(!coupon) {
+            return res.status(404).json({
+                success: false,
+                message: "Coupon doesn't exists!"
+            });
+        }
+
+        return res.status(200).json(coupon);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong while getting details."
+        });
+    }
+}
