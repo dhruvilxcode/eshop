@@ -79,7 +79,7 @@ export const deactivateCoupon = async (req, res) => {
 
         return res.status(201).json({
             success: true,
-            message: "Coupon deactivated.",
+            message: "Coupon deactivated SuccessFully.",
             coupon
         });
     } catch (error) {
@@ -98,7 +98,25 @@ export const deactivateCoupon = async (req, res) => {
  * @description Only admin and Moderator can delete the coupon
  * @returns Success Message "Coupon Deleted SuccessFully"
  *********************************************************/
+export const deleteCoupon = async (req, res) => {
+    const {code} = req.params;
 
+    try {
+        const deletedCoupon = await Coupon.findOneAndDelete({code});
+
+        return res.status(200).json({
+            success: true,
+            message: "Coupon deleted successfully.",
+            coupon: deletedCoupon
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong while saving details."
+        });
+    }
+};
 
 
 /**********************************************************
