@@ -2,6 +2,6 @@
 
 Open Source E-Commerce
 
-# Status
+# Status 🟨
 
 In Progress, (don't use until the we release the Alpha version)
