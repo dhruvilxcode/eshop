@@ -20,7 +20,11 @@ const config = {
     S3_ENDPOINT: process.env.ENDPOINT,
 
     RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
-    RAZORPAY_SECRET: process.env.RAZORPAY_SECRET
+    RAZORPAY_SECRET: process.env.RAZORPAY_SECRET,
+
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
 };
 
 export default config;
