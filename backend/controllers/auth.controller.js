@@ -1,6 +1,7 @@
 import User from "../models/user.model";
 import mailHelper from "../utils/mailHelper";
 import crypto from "crypto";
+import config from "../config";
 
 const cookieOptions = {
     expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
@@ -141,7 +142,7 @@ export const forgotPassword = async (req, res) => {
 
     await user.save({ validateBeforeSave: false });
 
-    const resetURL = `${req.protocol}://${req.get("host")}/api/auth/password/reset/${resetToken}`;
+    const resetURL = `${config.FRONTEND_DOMAIN}/password/reset/${resetToken}`;
 
     const text = `Click on the link to reset your password.\n\n${resetURL}\n\n`;
 

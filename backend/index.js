@@ -22,6 +22,5 @@ import app from "./app.js";
     app.listen(config.PORT, onListening);
   } catch (err) {
     console.error("ERROR ", err);
-    throw err;
   }
 })();
