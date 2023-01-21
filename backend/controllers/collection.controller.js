@@ -7,7 +7,6 @@ import Collection from "../models/collection.model";
  * @parameters name, email, password
  * @returns User Object
  ******************************************************/
-
 export const createCollection = async (req, res) => {
     const {name} = req.body;
 
