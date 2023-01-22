@@ -1,7 +1,7 @@
-import User from "../models/user.model";
-import mailHelper from "../utils/mailHelper";
+import User from "../models/user.model.js";
+import mailHelper from "../utils/mailHelper.js";
 import crypto from "crypto";
-import config from "../config";
+import config from "../config/index.js";
 
 const cookieOptions = {
     expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
@@ -25,35 +25,43 @@ export const signUp = async (req, res) => {
         });
     }
 
-    // check the user data to DB
-    const userExists = await User.findOne({email});
+    try {
+        // check the user data to DB
+        const userExists = await User.findOne({email});
 
-    if(userExists) {
-        return res.status(400).json({
-            message: "you already have account with us, do sign in"
+        if(userExists) {
+            return res.status(400).json({
+                message: "you already have account with us, do sign in"
+            });
+        }
+
+        const user = await User.create({
+            name, 
+            email,
+            password,
         });
+
+        const token = user.generateJWT();
+
+        user.password = undefined;
+        return res.status(200).cookie("token", token, cookieOptions).json({
+            success: true,
+            token,
+            user
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(400).json({
+            success: false,
+            message: error.message
+        })
     }
-
-    const user = await User.create({
-        name, 
-        email,
-        password,
-    });
-
-    const token = user.generateJWT();
-
-    user.password = undefined;
-    return res.status(200).cookie("token", token, cookieOptions).json({
-        success: true,
-        token,
-        user
-    });
 }
 
 
 /******************************************************
  * @LOGIN
- * @route /api/auth/login
+ * @route /api/v1/auth/login
  * @description User signIn Controller for loging new user
  * @parameters  email, password
  * @returns token, User Object
@@ -68,34 +76,42 @@ export const login = async (req, res) => {
         });
     }
 
-    const user = await User.findOne({email}).select("+password");
+    try {
+        const user = await User.findOne({email}).select("+password");
 
-    if(!user) {
+        if(!user) {
+            return res.status(400).json({
+                message: "Invalid credentials"
+            });
+        }
+
+        const isPasswordMatched = await user.comparePassword(password);
+
+        if(isPasswordMatched) {
+            const token = user.generateJWT();
+            user.password = undefined;
+            return res.cookie("token", token, cookieOptions).status(200).json({
+                success: true,
+                token,
+                user
+            });
+        }
+
         return res.status(400).json({
-            message: "Invalid credentials"
+            message: "email or password is wrong!"
         });
+    } catch (error) {
+        console.error(error);
+        return res.status(400).json({
+            success: false,
+            message: error.message
+        })
     }
-
-    const isPasswordMatched = await user.comparePassword(password);
-
-    if(isPasswordMatched) {
-        const token = user.generateJWT();
-        user.password = undefined;
-        return res.cookie("token", token, cookieOptions).status(200).json({
-            success: true,
-            token,
-            user
-        });
-    }
-
-    return res.status(400).json({
-        message: "email or password is wrong!"
-    });
 };
 
 /******************************************************
  * @LOGOUT
- * @route http://localhost:5000/api/auth/logout
+ * @route /api/v1/auth/logout
  * @description User logout bby clearing user cookies
  * @parameters  
  * @returns success message
@@ -115,7 +131,7 @@ export const logout = async (req, res) => {
 
 /******************************************************
  * @FORGOT_PASSWORD
- * @route http://localhost:5000/api/auth/password/forgot
+ * @route /api/v1/auth/password/forgot
  * @description User will submit email and we will generate a token
  * @parameters  email
  * @returns success message - email send
@@ -171,7 +187,7 @@ export const forgotPassword = async (req, res) => {
 
 /******************************************************
  * @RESET_PASSWORD
- * @route http://localhost:5000/api/auth/password/reset/:resetToken
+ * @route /api/v1/auth/password/reset/:resetToken
  * @description User will be able to reset/change password based on url token
  * @parameters  token from url, password and confirmpass
  * @returns User object
@@ -218,7 +234,7 @@ export const resetPassword = async (req, res) => {
 /******************************************************
  * @GET_PROFILE
  * @REQUEST_TYPE GET
- * @route http://localhost:5000/api/auth/profile
+ * @route /api/v1/auth/profile
  * @description check for token and populate req.user
  * @parameters 
  * @returns User Object

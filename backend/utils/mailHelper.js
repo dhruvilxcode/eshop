@@ -1,5 +1,5 @@
-import transporter from "../config/transporter.config";
-import config from "../config/index";
+import transporter from "../config/transporter.config.js";
+import config from "../config/index.js";
 
 const mailHelper = async (options) => {
     const message = {

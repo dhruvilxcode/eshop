@@ -4,6 +4,7 @@ import app from "./app.js";
 
 (async () => {
   try {
+    mongoose.set('strictQuery', false);
     await mongoose.connect(config.MONGODB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
