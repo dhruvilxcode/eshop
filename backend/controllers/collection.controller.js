@@ -1,11 +1,12 @@
-import Collection from "../models/collection.model";
+import Collection from "../models/collection.model.js";
 
 /******************************************************
+ * @POST
  * @Create_COLLECTION
- * @route http://localhost:5000/api/collection
- * @description User signUp Controller for creating new user
- * @parameters name, email, password
- * @returns User Object
+ * @route /api/v1/collections/create
+ * @description create collection
+ * @parameters name
+ * @returns collection Object
  ******************************************************/
 export const createCollection = async (req, res) => {
     const {name} = req.body;
@@ -27,6 +28,14 @@ export const createCollection = async (req, res) => {
     });
 }
 
+/******************************************************
+ * @PUT
+ * @UPDATE_COLLECTION
+ * @route /api/v1/collections/update
+ * @description updates the collection
+ * @parameters id, name
+ * @returns collection Object
+ ******************************************************/
 export const updateCollection = async (req, res) => {
     const {id: collectionId} = req.params;
 
@@ -49,6 +58,14 @@ export const updateCollection = async (req, res) => {
     });
 };
 
+/******************************************************
+ * @DELETE
+ * @DELETE_COLLECTION
+ * @route /api/v1/collections/delete
+ * @description delete the collection
+ * @parameters id
+ * @returns success
+ ******************************************************/
 export const deleteCollection = async (req, res) => {
     const {id: collectionId} = req.params;
 
@@ -61,6 +78,12 @@ export const deleteCollection = async (req, res) => {
     });
 }
 
+/**********************************************
+ * @GET
+ * @PATH /api/v1/collections
+ * @DESCRIPTION this controller will return all the collection from DB.
+ * @RETURNS returns collection array
+ *********************************************/
 export const getAllCollection = async (req, res) => {
     const collections = await Collection.find();
 
