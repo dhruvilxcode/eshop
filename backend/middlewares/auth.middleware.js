@@ -1,7 +1,7 @@
 import JWT from "jsonwebtoken";
 import User from "../models/user.model.js";
 import config from "../config/index.js";
-
+import AuthRoles from "../utils/authRoles.js";
 export const isLoggedIn = async (req, res, next) => {
     let token;
 
@@ -25,6 +25,8 @@ export const isLoggedIn = async (req, res, next) => {
         req.user = await User.findById(id)
         next();
     } catch (error) {
+        // TODO: handle if token is expired
+        
         return res.status(403).json({
             success: false,
             message: "You're not allowed to access this page."
@@ -32,5 +34,15 @@ export const isLoggedIn = async (req, res, next) => {
     }
 }
 
+export const isAdmin = async (req, res, next) => {
+    const user = req.user;
 
+    if(user.role !== AuthRoles.ADMIN) {
+        return res.status(403).json({
+            success: false,
+            message: "You're not authorized to perform this operation!"
+        });
+    }
+    next();
+}
 // TODO: write middleware for authenticating admin, user, guest
