@@ -45,4 +45,16 @@ export const isAdmin = async (req, res, next) => {
     }
     next();
 }
+
+export const isAdminOrModerator  = async (req, res, next) => {
+    const user = req.user;
+
+    if(user.role === AuthRoles.ADMIN || user.role === AuthRoles.MODERATOR) {
+        return next();
+    }
+    return res.status(403).json({
+        success: false,
+        message: "You're not authorized to perform this operation!"
+    });
+}
 // TODO: write middleware for authenticating admin, user, guest
