@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { login, logout, forgotPassword, signUp, getProfile, resetPassword } from "../controllers/auth.controller.js";
+import { isLoggedIn } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -10,7 +11,7 @@ router.post("/signup", signUp);
 
 router.get("/logout", logout);
 
-router.get("/profile", getProfile);
+router.get("/profile", isLoggedIn, getProfile);
 
 router.post("/password/forgot", forgotPassword);
 

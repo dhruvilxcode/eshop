@@ -90,7 +90,8 @@ export const login = async (req, res) => {
         if(isPasswordMatched) {
             const token = user.generateJWT();
             user.password = undefined;
-            return res.cookie("token", token, cookieOptions).status(200).json({
+            res.cookie("token", token, cookieOptions);
+            return res.status(200).json({
                 success: true,
                 token,
                 user
@@ -242,6 +243,8 @@ export const resetPassword = async (req, res) => {
 
 export const getProfile = async (req, res) => {
     const {user} = req;
+
+    user.password = undefined;
 
     if(!user) {
         return res.status(404).json({

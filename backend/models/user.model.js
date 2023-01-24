@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
     forgotPasswordExpiry: Date,
 }, {timestamps: true});
 
-userSchema.pre("pre", async function(next) {
+userSchema.pre('save',async function(next) {
     if(!this.isModified("password")) {
         return next();
     }

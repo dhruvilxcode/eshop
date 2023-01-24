@@ -1,6 +1,6 @@
 import JWT from "jsonwebtoken";
-import User from "../models/user.model";
-import config from "../config/index";
+import User from "../models/user.model.js";
+import config from "../config/index.js";
 
 export const isLoggedIn = async (req, res, next) => {
     let token;
@@ -21,8 +21,7 @@ export const isLoggedIn = async (req, res, next) => {
     try {
         const decodedToken = JWT.verify(token, config.JWT_SECRET);
         const id = decodedToken._id;
-
-        //TODO: fix me
+        
         req.user = await User.findById(id)
         next();
     } catch (error) {
