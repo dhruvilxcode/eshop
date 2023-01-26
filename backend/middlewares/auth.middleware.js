@@ -57,4 +57,18 @@ export const isAdminOrModerator  = async (req, res, next) => {
         message: "You're not authorized to perform this operation!"
     });
 }
+
+export const isOwner = async (req, res, next) => {
+    const userId = req.params?.userId || '';
+
+    if(req.user._id == userId) {
+        return next();
+    }
+
+    return res.status(403).json({
+        success: false,
+        message: "You're not authorized to perform this operation"
+    });
+}
+
 // TODO: write middleware for authenticating admin, user, guest

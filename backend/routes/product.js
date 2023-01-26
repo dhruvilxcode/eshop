@@ -9,8 +9,8 @@ router.get("/:productId", getProduct);
 
 router.post("/create", isLoggedIn, isAdmin, addProduct);
 
-// router.put("/update/:id", isLoggedIn, isAdmin, updateCollection);
+// router.put("/update/:id", isLoggedIn, isAdmin, updateCollection); //TODO:
 
-// router.delete("/delete/:id", isLoggedIn, isAdmin, deleteCollection);
+// router.delete("/delete/:id", isLoggedIn, isAdmin, deleteCollection); //TODO:
 
 export default router;

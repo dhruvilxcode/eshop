@@ -1,10 +1,10 @@
-import Wishlist from "../models/wishlist.model";
+import Wishlist from "../models/wishlist.model.js";
 
 /*******************************************
  * @addProductToWishlist
  * @POST
- * @ROUTE http://localhost:4000/api/v1/users/:userId/wishlist/add
- * @PARAMS userId, product id
+ * @ROUTE /api/v1/wishlist/:userId/add
+ * @PARAMS userId, productId
  * @DESCRIPTION this method will add product to wishlist collection
  * @RETURNS suceess
  ******************************************/
@@ -22,24 +22,29 @@ export const addProductToWishlist = async (req, res) => {
 
     try {
         
-        const resp = await Wishlist.findOneAndUpdate({
+        const wishlist = await Wishlist.findOne({
             userId
-        }, {
-            $addToSet: {
-                products: productId
-            }
         });
 
-        if(!resp) {
-            return res.status(400).json({
-                success: false,
-                message: "Can't add Product to wishlist now!"
+        if(!wishlist) {
+            await Wishlist.create({
+                userId,
+                products: [productId]
+            });
+
+            return res.status(200).json({
+                success: true,
+                message: "Wishlist created."
             });
         }
 
+        wishlist.products.push(productId);
+        const newWishlist = await wishlist.save();
+
         return res.status(200).json({
             success: true,
-            message: "Product added to Wishlist."
+            message: "Product added to Wishlist.",
+            wishlist: newWishlist,
         });
 
     } catch (error) {
@@ -54,8 +59,8 @@ export const addProductToWishlist = async (req, res) => {
 /*******************************************
  * @removeProductFromWishlist
  * @POST
- * @ROUTE http://localhost:4000/api/v1/users/:userId/wishlist/remove
- * @PARAMS userId, product id
+ * @ROUTE /api/v1/wishlist/:userId/remove
+ * @PARAMS userId, productId
  * @DESCRIPTION this method will remove product from wishlist collection
  * @RETURNS suceess
  ******************************************/
@@ -106,7 +111,7 @@ export const removeProductFromWishlist = async (req, res) => {
 /*******************************************
  * @getWishlist
  * @GET
- * @ROUTE http://localhost:4000/api/v1/users/:userId/wishlist
+ * @ROUTE /api/v1/wishlist/:userId
  * @PARAMS userId
  * @DESCRIPTION this method will return the list of user's wishlist
  * @RETURNS list of products from wishlist
@@ -129,7 +134,7 @@ export const getWishlist = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: userWishlist.products,
+            wishlist: userWishlist.products,
         });
 
     } catch (error) {
