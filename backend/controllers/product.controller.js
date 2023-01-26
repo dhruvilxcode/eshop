@@ -43,48 +43,69 @@ export const addProduct = async (req, res) => {
 
       const productId = new mongoose.Types.ObjectId().toHexString();
 
-      // TODO: accept images
-      let imgArrayResponse = Promise.all(
-        files.images.map(async (file, index)=>{
-          
-          /* file object has following keys: 
-            filepath, newFilename,
-            originalFilename,
-            mimetype,
-            size
-          */
+      let imgArrayResponse;
+      if (files.images) {
+        imgArrayResponse = Promise.all(
+          files.images.map(async (file, index) => {
+            /* file object has following keys: 
+              filepath, newFilename,
+              originalFilename,
+              mimetype,
+              size
+            */
 
-          const upload = await uploadImageCloudinary({
-            file: file.filepath,
-            bucket: `products/${productId}/`,
-            filename: `photo_${index + 1}.jpg`,
-          });
+            const upload = await uploadImageCloudinary({
+              file: file.filepath,
+              bucket: `products/${productId}/`,
+              filename: `photo_${index + 1}.jpg`,
+            });
 
-          return {
-            secure_url: upload.secure_url,
-          };
-        })
-      );
+            return {
+              secure_url: upload.secure_url,
+            };
+          })
+        );
+      }
 
-      const imgArray = await imgArrayResponse;
+      if (files.images) {
+        const imgArray = await imgArrayResponse;
 
-      const product = await Product.create({
+        const product = await Product.create({
           _id: productId,
           photos: imgArray,
           ...fields,
+        });
+
+        if (!product) {
+          return res.status(500).json({
+            success: false,
+            message: "Something went wrong while saving product details",
+          });
+        }
+
+        return res.status(200).json({
+          success: true,
+          message: "Product added.",
+          product,
+        });
+      }
+
+      const product = await Product.create({
+        _id: productId,
+        ...fields,
       });
 
-      if(!product) {
-          return res.status(500).json({
-              success: false,
-              message: "Something went wrong while saving product details"
-          });
+      if (!product) {
+        return res.status(500).json({
+          success: false,
+          message: "Something went wrong while saving product details",
+        });
       }
 
       return res.status(200).json({
-          success: true,
-          message: "Product added.",
-          product
+        success: true,
+        message: "Product added.",
+        product,
       });
     } catch (error) {
       console.error(error);
@@ -103,7 +124,7 @@ export const addProduct = async (req, res) => {
  * @RETURNS product array list
  ***************************************************************/
 export const getAllProducts = async (req, res) => {
-  const products = await Product.find({}).populate('collectionId');
+  const products = await Product.find({}).populate("collectionId");
 
   if (!products) {
     return res.status(200).json([]);
@@ -123,7 +144,7 @@ export const getProduct = async (req, res) => {
   const { productId } = req.params;
 
   try {
-    const product = await Product.findById(productId).populate('collectionId');
+    const product = await Product.findById(productId).populate("collectionId");
 
     if (!product) {
       return res.status(404).json({
@@ -145,4 +166,121 @@ export const getProduct = async (req, res) => {
   }
 };
 
-// TODO: update product, delete product, make product as featured
+// TODO: improve the update product route
+/**********************************************************
+ * @UPDATE_PRODUCT
+ * @route /api/products/:productId/update
+ * @description Controller used for updating a product
+ * @description Only admin can update the product
+ * @description Uses AWS S3 Bucket for image upload
+ * @returns Product Object
+ *********************************************************/
+export const updateProduct = async (req, res) => {
+  const form = formidable({
+    multiples: true,
+    keepExtensions: true,
+  });
+
+  form.parse(req, async function (err, fields, files) {
+    try {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({
+          success: false,
+          message: "Something went wrong! try again later!",
+        });
+      }
+
+      if (
+        !fields.name ||
+        !fields.price ||
+        !fields.description ||
+        !fields.collectionId
+      ) {
+        return res.status(400).json({
+          success: false,
+          message: "Please provide all details!",
+        });
+      }
+
+      const productId = req.params.productId;
+
+      let imgArrayResponse;
+      if (files.images) {
+        imgArrayResponse = Promise.all(
+          files.images.map(async (file, index) => {
+            /* file object has following keys: 
+              filepath, newFilename,
+              originalFilename,
+              mimetype,
+              size
+            */
+
+            const upload = await uploadImageCloudinary({
+              file: file.filepath,
+              bucket: `products/${productId}/`,
+              filename: `photo_${index + 1}.jpg`,
+            });
+
+            return {
+              secure_url: upload.secure_url,
+            };
+          })
+        );
+      }
+
+      if (files.images) {
+        const imgArray = await imgArrayResponse;
+
+        const product = await Product.findByIdAndUpdate(
+          { _id: productId },
+          {
+            photos: imgArray,
+            ...fields,
+          }
+        );
+
+        if (!product) {
+          return res.status(500).json({
+            success: false,
+            message: "Something went wrong while saving product details",
+          });
+        }
+
+        return res.status(200).json({
+          success: true,
+          message: "Product updated.",
+          product,
+        });
+      }
+
+      const product = await Product.findOneAndUpdate(
+        {
+          _id: productId,
+        },
+        {
+          ...fields,
+        }
+      );
+
+      if (!product) {
+        return res.status(500).json({
+          success: false,
+          message: "Something went wrong while saving product details",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "Product updated.",
+        product,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        success: false,
+        message: error.message || "Something went wrong, try again later",
+      });
+    }
+  });
+};

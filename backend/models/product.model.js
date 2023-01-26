@@ -21,9 +21,17 @@ const productSchema = new mongoose.Schema({
     description: {
         type: String // use editorjs or similar
     },
-    // TODO: add product variants
-    // TODO: Size chart optional
-    // TODO: featured product
+    variants: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Product",
+        }
+    ],
+    sizes: [
+        {
+            type: String,
+        }
+    ],
     featured: {
         type: Boolean,
         default: false,
