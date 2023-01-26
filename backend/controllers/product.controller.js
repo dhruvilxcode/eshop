@@ -168,6 +168,34 @@ export const getProduct = async (req, res) => {
 
 // TODO: improve the update product route
 /**********************************************************
+ * @delete
+ * @DELETE_PRODUCT
+ * @route /api/products/:productId/delete
+ * @description Controller used for deleting a product
+ * @description Only admin can delete the product
+ * @returns Product Object
+ *********************************************************/
+export const deleteProduct = async (req, res) => {
+  const productId = req.params.productId;
+
+  try {
+    const deletedProduct = await Product.findOneAndRemove(productId);
+
+    return res.status(200).json({
+      success: true,
+      message: "Product successfully deleted.",
+      deletedProduct
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong while deleting product!"
+    });
+  }
+};
+
+/**********************************************************
  * @UPDATE_PRODUCT
  * @route /api/products/:productId/update
  * @description Controller used for updating a product
