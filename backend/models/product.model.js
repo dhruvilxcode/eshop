@@ -12,11 +12,22 @@ const productSchema = new mongoose.Schema({
         required: [true, 'Please provide price'],
         maxLength: 10,
     },
+    mrp: {
+        type: Number,
+    },
+    sku_id: {
+        type: String,
+    },
     description: {
         type: String // use editorjs or similar
     },
     // TODO: add product variants
     // TODO: Size chart optional
+    // TODO: featured product
+    featured: {
+        type: Boolean,
+        default: false,
+    },
     photos: [
         {
             secure_url: {

@@ -5,8 +5,12 @@ import cloudinary from "../config/cloudinary.config.js"
 
 
 // TODO: complete this
-export const uploadImageCloudinary = async ({bucketName, key, body, contentType}) => {
-  const res = cloudinary.uploader.upload();
+export const uploadImageCloudinary = async ({file, bucket, filename}) => {
+  const res = await cloudinary.uploader.upload(file, {
+    folder: bucket,
+    filename_override: filename,
+  });
+  return res;
 };
 
 

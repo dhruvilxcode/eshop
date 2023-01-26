@@ -9,6 +9,7 @@ import config from "./config/index.js";
 import AuthRoutes from "./routes/auth.js";
 import CollectionRoutes from "./routes/collection.js";
 import CouponRoutes from "./routes/coupon.js";
+import ProductRoutes from "./routes/product.js";
 // route imports
 
 const app = express();
@@ -25,6 +26,7 @@ app.use(morgan("tiny"));
 app.use("/api/v1/auth", AuthRoutes);
 app.use("/api/v1/collections", CollectionRoutes);
 app.use("/api/v1/coupons", CouponRoutes);
+app.use("/api/v1/products", ProductRoutes);
 // routes
 
 app.get("/", (req, res) => {
