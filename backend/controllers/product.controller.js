@@ -103,7 +103,7 @@ export const addProduct = async (req, res) => {
  * @RETURNS product array list
  ***************************************************************/
 export const getAllProducts = async (req, res) => {
-  const products = await Product.find({});
+  const products = await Product.find({}).populate('collectionId');
 
   if (!products) {
     return res.status(200).json([]);
@@ -123,7 +123,7 @@ export const getProduct = async (req, res) => {
   const { productId } = req.params;
 
   try {
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).populate('collectionId');
 
     if (!product) {
       return res.status(404).json({
