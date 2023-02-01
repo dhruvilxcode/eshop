@@ -1,3 +1,5 @@
+"use client";
+
 import { getProfile } from "@/controllers/auth.controller";
 import { useEffect } from "react";
 
@@ -17,5 +19,7 @@ export default function AdminDashboardPage() {
     }
   };
 
-  return <div>Admin Dashboard</div>;
+  return <div className="">
+    Dashboard
+  </div>;
 }

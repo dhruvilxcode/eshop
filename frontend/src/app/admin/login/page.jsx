@@ -1,10 +1,13 @@
+"use client";
 import { signIn } from "@/controllers/auth.controller";
 import { useRef } from "react";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function AdminLoginPage() {
   const emailRef = useRef();
   const passwordRef = useRef();
+  const router = useRouter();
 
   const btnLogin = async (e) => {
     e.preventDefault();
@@ -25,13 +28,17 @@ export default function AdminLoginPage() {
     }
     
     try {
+      toast.loading();
       const res = await signIn(email, password);
+      toast.dismiss();
       if(res.status === 200) {
         console.log(res.data);
         toast.success("logged in")
+        await router.replace("/admin/dashboard");
         return;
       }
     } catch (error) {
+      toast.dismiss();
       const data = error?.response?.data;
       toast.error(data?.message || "Something went wrong!");
     }
