@@ -14,6 +14,12 @@ export const signIn = async (email, password) => {
     return resp;
 }
 
+export const logOut = async () => {
+    axios.defaults.withCredentials = true; 
+    const resp = await axios.get(`${API}/auth/logout`);
+    return resp;
+}
+
 export const getProfile = async () => {
     axios.defaults.withCredentials = true; 
     
