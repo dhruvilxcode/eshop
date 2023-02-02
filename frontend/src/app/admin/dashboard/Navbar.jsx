@@ -25,7 +25,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="w-80 h-screen bg-white border-r-2 overflow-y-scroll px-4 ">
+    <div className="w-80 h-screen bg-white border-r-2 overflow-y-auto px-4">
       <Image 
         src={logo}
         alt="Logo of the E-Shop"
@@ -101,7 +101,7 @@ export default function Navbar() {
           <p>Reports</p>
         </div>
       </Link>
-      <button onClick={btnLogoutUser} className="bg-red-100 hover:bg-red-300 text-red-500 rounded-xl mt-4 block w-full">
+      <button onClick={btnLogoutUser} className="bg-red-100 hover:bg-red-300 text-red-500 rounded-xl my-4 block w-full">
         <div className=" flex gap-2 items-center w-full px-3 py-2 ">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="fill-red-500" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2a9.985 9.985 0 0 1 8 4h-2.71a8 8 0 1 0 .001 12h2.71A9.985 9.985 0 0 1 12 22zm7-6v-3h-8v-2h8V8l5 4-5 4z"/></svg>
           <p>Logout</p>
