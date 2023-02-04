@@ -37,3 +37,14 @@ export async function deleteCollection(collectionId) {
     const resp = await axios.delete(`${API}/collections/delete/${collectionId}`);
     return resp;
 }
+
+/**
+ * @param {string} collectionId - provide the collection id, this parameter is required
+ * @param {string} name - provide collection name to update the collection, this parameter is required.
+ *  */
+export async function updateCollection(collectionId, name) {
+    const resp = await axios.put(`${API}/collections/update/${collectionId}`, {
+        name: name
+    });
+    return resp;
+}

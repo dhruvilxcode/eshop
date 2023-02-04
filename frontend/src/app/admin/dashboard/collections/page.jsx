@@ -60,9 +60,9 @@ export default function CollectionsPage() {
                 <p className="mt-2 text-xs text-slate-500">{collection.createdAt}</p>
               </div>
               <div className="flex gap-2">
-                <button className="w-7 h-7 rounded-full bg-blue-50 hover:bg-blue-200 flex items-center justify-center">
+                <Link href={`/admin/dashboard/collections/update/${collection._id}?name=${collection.name}`} className="w-7 h-7 rounded-full bg-blue-50 hover:bg-blue-200 flex items-center justify-center">
                   <svg xmlns="http://www.w3.org/2000/svg" className="fill-blue-400" viewBox="0 0 24 24" width="18" height="18"><path fill="none" d="M0 0h24v24H0z"/><path d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z"/></svg>
-                </button>
+                </Link>
                 <button onClick={()=>{
                   btnDeleteCollection(collection._id);
                 }} className="w-7 h-7 rounded-full bg-red-50 hover:bg-red-200 flex items-center justify-center">
