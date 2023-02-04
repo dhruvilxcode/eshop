@@ -29,3 +29,11 @@ export async function createCollection(name) {
     });
     return resp;
 }
+
+/**
+ * @param {string} collectionId provide unique collection id to remove the collection
+ *  */ 
+export async function deleteCollection(collectionId) {
+    const resp = await axios.delete(`${API}/collections/delete/${collectionId}`);
+    return resp;
+}

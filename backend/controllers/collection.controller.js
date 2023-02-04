@@ -17,15 +17,23 @@ export const createCollection = async (req, res) => {
         });
     }
 
-    const collection = await Collection.create({
-        name
-    });
-
-    return res.status(201).json({
-        success: true,
-        message: "Collection created successfully.",
-        collection
-    });
+    try {
+        const collection = await Collection.create({
+            name
+        });
+    
+        return res.status(201).json({
+            success: true,
+            message: "Collection created successfully.",
+            collection
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong while creating collection!"
+        });
+    }
 }
 
 /******************************************************
@@ -47,15 +55,23 @@ export const updateCollection = async (req, res) => {
         });
     }
 
-    const modifiedCollection = await Collection.findByIdAndUpdate(collectionId, {
-        name
-    }, {new: true, runValidators: true});
-
-    return res.status(200).json({
-        success: true,
-        message: "Collection updated.",
-        collection: modifiedCollection
-    });
+    try {
+        const modifiedCollection = await Collection.findByIdAndUpdate(collectionId, {
+            name
+        }, {new: true, runValidators: true});
+    
+        return res.status(200).json({
+            success: true,
+            message: "Collection updated.",
+            collection: modifiedCollection
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong while updating collection!"
+        });
+    }
 };
 
 /******************************************************
@@ -69,13 +85,21 @@ export const updateCollection = async (req, res) => {
 export const deleteCollection = async (req, res) => {
     const {id: collectionId} = req.params;
 
-    const collection = await Collection.findByIdAndDelete(collectionId);
-    collection.remove();
+    try {
+        const collection = await Collection.findByIdAndDelete(collectionId);
+        collection.remove();
 
-    return res.status(200).json({
-        success: true,
-        message: "Collection removed successfully."
-    });
+        return res.status(200).json({
+            success: true,
+            message: "Collection removed successfully."
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong while deleting collection!"
+        });
+    }
 }
 
 /**********************************************
