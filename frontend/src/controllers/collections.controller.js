@@ -19,3 +19,13 @@ export function useCollections() {
         isLoading,
     };
 }
+
+/**
+ * @param {string} name - provide collection name to create new collection, this parameter is required.
+ *  */
+export async function createCollection(name) {
+    const resp = await axios.post(`${API}/collections/create`, {
+        name: name
+    });
+    return resp;
+}

@@ -1,9 +1,10 @@
 "use client";
 import { useCollections } from "@/controllers/collections.controller";
 import React from "react";
+import Link from "next/link"
 
 export default function CollectionsPage() {
-  const { collections, isError, isLoading } = useCollections();
+  const { collections, isError, isLoading } = useCollections(); 
 
   if (isError) {
     console.error(isError);
@@ -18,9 +19,9 @@ export default function CollectionsPage() {
     <div className="w-full px-4 py-6 2xl:w-2/4 2xl:mx-auto">
       <h3>Collections</h3>
 
-      <button className="mt-4 bg-slate-200 hover:bg-slate-300 text-sm text-slate-800 rounded-md px-4 py-2">
+      <Link href="/admin/dashboard/collections/add" className="mt-4 inline-block bg-slate-200 hover:bg-slate-300 text-sm text-slate-800 rounded-md px-4 py-2">
         Add Collection
-      </button>
+      </Link>
 
       <div className="mt-6 flex flex-col gap-4 w-full md:w-2/4 2xl:w-full md:mx-auto">
         {collections.map((collection) => (
