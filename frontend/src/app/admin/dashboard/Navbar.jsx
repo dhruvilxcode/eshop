@@ -1,3 +1,4 @@
+"use client";
 import React from 'react'
 import Image from "next/image";
 import Link from "next/link";
@@ -99,6 +100,16 @@ export default function Navbar() {
       }>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0H24V24H0z"/><path d="M5 3v16h16v2H3V3h2zm15.293 3.293l1.414 1.414L16 13.414l-3-2.999-4.293 4.292-1.414-1.414L13 7.586l3 2.999 4.293-4.292z"/></svg>
           <p>Reports</p>
+        </div>
+      </Link>
+      <Link href="/admin/dashboard/settings">
+      <div className={
+        pathname === "/admin/dashboard/settings" ? 
+        "bg-gray-100 hover:bg-gray-100 flex gap-2 items-center px-3 py-2 mt-4 border rounded-xl" : 
+        "bg-white hover:bg-gray-100 flex gap-2 items-center px-3 py-2 mt-4 border border-transparent rounded-xl"
+      }>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 1l9.5 5.5v11L12 23l-9.5-5.5v-11L12 1zm0 2.311L4.5 7.653v8.694l7.5 4.342 7.5-4.342V7.653L12 3.311zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+          <p>Settings</p>
         </div>
       </Link>
       <button onClick={btnLogoutUser} className="bg-red-100 hover:bg-red-300 text-red-500 rounded-xl my-4 block w-full">
