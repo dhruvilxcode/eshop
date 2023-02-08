@@ -3,7 +3,6 @@ import Sidebar from "./Sidebar";
 import Breadcrumb from "./Breadcrumb";
 import { useProduct } from "@/controllers/products.controller";
 export default function DashboardProductDetailPageLayout({ children, params }) {
-
   const { product, isError, isLoading } = useProduct(params.productId);
 
   if(isLoading) {

@@ -47,3 +47,12 @@ export async function updateProductBasicDetails(productId, form) {
     const resp = await axios.post(`${API}/products/${productId}/update/basic_details`, form);
     return resp;
 }
+
+/**
+ * @param {string} productId ID of the product to update
+ * @param {FormData} form pass form data 
+ * */  
+export async function updateProductAdvanceDetails(productId, form) {
+    const resp = await axios.post(`${API}/products/${productId}/update/advance_details`, form);
+    return resp;
+}

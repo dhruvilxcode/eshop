@@ -34,7 +34,7 @@ export default function ProductsPage() {
         Add Product
       </Link>
 
-      <div className="mt-8 flex flex-col gap-4">
+      <div className="mt-8 flex flex-col gap-4 md:w-2/4 md:mx-auto">
       {products.map((product) => (
         <Link href={`/admin/dashboard/products/${product._id}/basic_details`} key={product._id}>
           <div className="flex gap-4 bg-white px-4 py-4 rounded-2xl border">
