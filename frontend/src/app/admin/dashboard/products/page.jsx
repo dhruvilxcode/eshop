@@ -35,25 +35,35 @@ export default function ProductsPage() {
       </Link>
 
       <div className="mt-8 flex flex-col gap-4 md:w-2/4 md:mx-auto">
-      {products.map((product) => (
-        <Link href={`/admin/dashboard/products/${product._id}/basic_details`} key={product._id}>
-          <div className="flex gap-4 bg-white px-4 py-4 rounded-2xl border">
-          <div className="w-24 h-28 bg-gray-300 rounded-xl"></div>
-          <div>
-            <p>{product.name}</p>
-            <p className="text-sm text-gray-500">SKU: {product.sku_id}</p>
-            <div className="flex gap-4 mt-4">
-              {product.featured?<div className="bg-yellow-500 px-2 text-white rounded">
-                Featured
-              </div>:<></>}
-              <div className="bg-gray-200 px-2 text-gray-500 rounded">
-                Stock: {product.stock}
+        {products.map((product) => (
+          <Link
+            href={`/admin/dashboard/products/${product._id}/basic_details`}
+            key={product._id}
+          >
+            <div className="flex gap-4 bg-white px-4 py-4 rounded-2xl border">
+              <img
+                className="w-24 h-28 bg-gray-300 rounded-xl object-cover"
+                src={product?.photos[0]?.secure_url}
+              />
+              <div>
+                <p>{product.name}</p>
+                <p className="text-sm text-gray-500">SKU: {product.sku_id}</p>
+                <div className="flex gap-4 mt-4">
+                  {product.featured ? (
+                    <div className="bg-yellow-500 px-2 text-white rounded">
+                      Featured
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                  <div className="bg-gray-200 px-2 text-gray-500 rounded">
+                    Stock: {product.stock}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        </Link>
-      ))}
+          </Link>
+        ))}
       </div>
     </div>
   );

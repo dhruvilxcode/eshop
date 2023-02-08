@@ -5,8 +5,8 @@ import { updateProductBasicDetails, useProduct } from "@/controllers/products.co
 import { useCollections } from "@/controllers/collections.controller";
 
 export default function ProductBasicDetailsPage({ params }) {
-  const { collections } = useCollections();
   const { product, isError, isLoading } = useProduct(params.productId);
+  const { collections } = useCollections();
 
   const productNameRef = useRef(null);
   const productPriceRef = useRef(null);
