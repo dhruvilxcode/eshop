@@ -25,14 +25,18 @@ export const getAllProducts = async (req, res) => {
  * @GET_PRODUCT
  * @ROUTE /products/:productId
  * @PARAMS productId
+ * @QUERY include_collection
  * @DESCRIPTION get specific products
  * @RETURNS product object
  ***************************************************************/
 export const getProduct = async (req, res) => {
   const { productId } = req.params;
+  const { include_collection } = req.query;
 
   try {
-    const product = await Product.findById(productId).populate("collectionId");
+    const product = include_collection ? 
+    await Product.findById(productId).populate("collectionId") :
+    await Product.findById(productId);
 
     if (!product) {
       return res.status(404).json({
@@ -212,6 +216,11 @@ Update product:
  * @returns Product Object
  *  */  
 export const updateProductBasicDetails = async (req, res) => {
+  const form = formidable({
+    multiples: true,
+    keepExtensions: true,
+  });
+
   form.parse(req, async function (err, fields, files) {
     try {
       if (err) {
@@ -243,6 +252,7 @@ export const updateProductBasicDetails = async (req, res) => {
           name: fields.name,
           price: fields.price,
           collectionId: fields.collectionId,
+          mrp: fields.mrp || 0,
         }
       );
 
@@ -277,6 +287,11 @@ export const updateProductBasicDetails = async (req, res) => {
  * @returns Product Object
  *  */  
 export const updateProductAdvancedDetails = async (req, res) => {
+  const form = formidable({
+    multiples: true,
+    keepExtensions: true,
+  });
+
   form.parse(req, async function (err, fields, files) {
     try {
       if (err) {
@@ -331,6 +346,11 @@ export const updateProductAdvancedDetails = async (req, res) => {
  * @returns Product Object
  *  */  
 export const updateProductAsFeatured = async (req, res) => {
+  const form = formidable({
+    multiples: true,
+    keepExtensions: true,
+  });
+
   form.parse(req, async function (err, fields, files) {
     try {
       if (err) {

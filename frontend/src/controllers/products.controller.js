@@ -18,9 +18,32 @@ export function useProducts() {
 }
 
 /**
+ * @param {string} productId Product ID to get Product Object from DB
+ *  */ 
+export function useProduct(productId) {
+    const APIURL = `${API}/products/${productId}`;
+    const {data, error, isLoading} = useSWR(APIURL, fetcher);
+    return {
+        product: data?.product,
+        isError: error,
+        isLoading,
+        APIURL,
+    };
+}
+
+/**
  * @param {FormData} form pass form data 
  * */  
 export async function createProduct(form) {
     const resp = await axios.post(`${API}/products/create`, form);
+    return resp;
+}
+
+/**
+ * @param {string} productId ID of the product to update
+ * @param {FormData} form pass form data 
+ * */  
+export async function updateProductBasicDetails(productId, form) {
+    const resp = await axios.post(`${API}/products/${productId}/update/basic_details`, form);
     return resp;
 }
