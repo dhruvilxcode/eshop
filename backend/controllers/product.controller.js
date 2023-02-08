@@ -372,8 +372,17 @@ export const updateProductImages = async (req, res) => {
           message: "Please provide at least 1 image!"
         });
       }
+
+      let images=[];
+
+      if(files?.images?.length > 0) {
+        images.push(...files.images);
+      } else {
+        images.push(files.images);
+      }
+
       imgArrayResponse = Promise.all(
-        files.images.map(async (file, index) => {
+        images.map(async (file, index) => {
           /* file object has following keys: 
             filepath, newFilename,
             originalFilename,
