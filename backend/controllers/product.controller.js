@@ -312,62 +312,6 @@ export const updateProductAdvancedDetails = async (req, res) => {
           description: fields.description || undefined,
           sku_id: fields.sku_id || undefined,
           stock: fields.stock || 0,
-        }
-      );
-
-      if (!product) {
-        return res.status(500).json({
-          success: false,
-          message: "Something went wrong while saving product details",
-        });
-      }
-
-      return res.status(200).json({
-        success: true,
-        message: "Product updated.",
-        product,
-      });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-        success: false,
-        message: error.message || "Something went wrong, try again later",
-      });
-    }
-  });
-};
-
-/**
- * @updateProductAsFeatured
- * @POST
- * @ROUTE /api/v1/products/:productId/update/feature
- * @params productId, featured
- * @description make product feature or non-feature
- * @returns Product Object
- *  */  
-export const updateProductAsFeatured = async (req, res) => {
-  const form = formidable({
-    multiples: true,
-    keepExtensions: true,
-  });
-
-  form.parse(req, async function (err, fields, files) {
-    try {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({
-          success: false,
-          message: "Something went wrong! try again later!",
-        });
-      }
-
-      const productId = req.params.productId;
-
-      const product = await Product.findOneAndUpdate(
-        {
-          _id: productId,
-        },
-        {
           featured: fields.featured || false,
         }
       );
@@ -394,22 +338,22 @@ export const updateProductAsFeatured = async (req, res) => {
   });
 };
 
-// TODO: improve the update product route
-/**********************************************************
- * @UPDATE_PRODUCT
- * @route /api/products/:productId/update
- * @description Controller used for updating a product
- * @description Only admin can update the product
- * @description Uses AWS S3 Bucket for image upload
+/**
+ * @updateProductImages
+ * @POST
+ * @ROUTE /api/v1/products/:productId/update/images
+ * @params productId, images
+ * @description used to update advanced product details
  * @returns Product Object
- *********************************************************/
-export const updateProduct = async (req, res) => {
+ *  */  
+export const updateProductImages = async (req, res) => {
   const form = formidable({
     multiples: true,
     keepExtensions: true,
   });
 
   form.parse(req, async function (err, fields, files) {
+   
     try {
       if (err) {
         console.error(err);
@@ -419,77 +363,39 @@ export const updateProduct = async (req, res) => {
         });
       }
 
-      if (
-        !fields.name ||
-        !fields.price ||
-        !fields.description ||
-        !fields.collectionId
-      ) {
-        return res.status(400).json({
-          success: false,
-          message: "Please provide all details!",
-        });
-      }
-
       const productId = req.params.productId;
 
       let imgArrayResponse;
-      if (files.images) {
-        imgArrayResponse = Promise.all(
-          files.images.map(async (file, index) => {
-            /* file object has following keys: 
-              filepath, newFilename,
-              originalFilename,
-              mimetype,
-              size
-            */
-
-            const upload = await uploadImageCloudinary({
-              file: file.filepath,
-              bucket: `products/${productId}/`,
-              filename: `photo_${index + 1}.jpg`,
-            });
-
-            return {
-              secure_url: upload.secure_url,
-            };
-          })
-        );
-      }
-
-      if (files.images) {
-        const imgArray = await imgArrayResponse;
-
-        const product = await Product.findByIdAndUpdate(
-          { _id: productId },
-          {
-            photos: imgArray,
-            ...fields,
-          }
-        );
-
-        if (!product) {
-          return res.status(500).json({
-            success: false,
-            message: "Something went wrong while saving product details",
-          });
-        }
-
-        return res.status(200).json({
-          success: true,
-          message: "Product updated.",
-          product,
+      if (!files.images) {
+        return res.status(400).json({
+          success: false,
+          message: "Please provide at least 1 image!"
         });
       }
+      imgArrayResponse = Promise.all(
+        files.images.map(async (file, index) => {
+          /* file object has following keys: 
+            filepath, newFilename,
+            originalFilename,
+            mimetype,
+            size
+          */
 
-      const product = await Product.findOneAndUpdate(
-        {
-          _id: productId,
-        },
-        {
-          ...fields,
-        }
+          const upload = await uploadImageCloudinary({
+            file: file.filepath,
+            bucket: `products/${productId}/`,
+            filename: `photo_${index + 1}.jpg`,
+          });
+
+          return {
+            secure_url: upload.secure_url,
+          };
+        })
       );
+
+      const imgArray = await imgArrayResponse;
+
+      const product = await Product.findById(productId);
 
       if (!product) {
         return res.status(500).json({
@@ -497,6 +403,9 @@ export const updateProduct = async (req, res) => {
           message: "Something went wrong while saving product details",
         });
       }
+
+      product.photos.push(...imgArray);
+      await product.save();
 
       return res.status(200).json({
         success: true,

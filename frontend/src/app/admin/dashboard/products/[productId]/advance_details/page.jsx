@@ -11,6 +11,7 @@ export default function ProductAdvanceDetailsPage({
   const productDescriptionRef = useRef(null);
   const productSKURef = useRef(null);
   const productStockRef = useRef(null);
+  const productFeaturedRef = useRef(null);
   
   if (isLoading) {
     return <div className="w-full bg-gray-100">Please wait...</div>;
@@ -29,6 +30,7 @@ export default function ProductAdvanceDetailsPage({
     productDescriptionRef.current.value = product.description || null;
     productSKURef.current.value = product.sku_id || null;
     productStockRef.current.value = product.stock || 0;
+    productFeaturedRef.current.checked = product.featured || false;
   },[params.productId]);
 
   const btnSaveDetails = async () => {
@@ -36,11 +38,13 @@ export default function ProductAdvanceDetailsPage({
     const productDescription = productDescriptionRef.current.value;
     const productSKU = productSKURef.current.value;
     const productStock = productStockRef.current.value || 0;
+    const featured = productFeaturedRef.current.checked;
 
     const form = new FormData();
     form.append('description', productDescription);
     form.append('sku_id', productSKU);
     form.append('stock', productStock);
+    form.append('featured', featured);
 
     try {
       toast.loading("Please wait...");
@@ -104,6 +108,20 @@ export default function ProductAdvanceDetailsPage({
           placeholder="Enter Product Stock here..."
           className="block mt-2 px-4 py-3 rounded-md outline-none w-80"
         />
+
+        <label htmlFor="featured" className="block mt-4">
+          Featured
+        </label>
+        <label className="relative flex justify-between items-center group text-xl">
+          <input
+            name="featured"
+            id="featured"
+            ref={productFeaturedRef}
+            type="checkbox"
+            className="absolute left-1/2 -translate-x-1/2 w-full h-full peer appearance-none rounded-md"
+          />
+          <span className="w-10 h-6 flex items-center flex-shrink-0 ml-1 p-1 bg-gray-300 rounded-full duration-300 ease-in-out peer-checked:bg-green-400 after:w-5 after:h-5 after:bg-white after:rounded-full after:shadow-md after:duration-300 peer-checked:after:translate-x-3 group-hover:after:translate-x-1"></span>
+        </label>
 
         <button onClick={btnSaveDetails} className="mt-8 block w-80 px-4 py-3 rounded-md bg-orange-500 hover:bg-orange-600 text-white">
           Save
