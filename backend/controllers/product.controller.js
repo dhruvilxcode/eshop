@@ -3,7 +3,7 @@ import formidable from "formidable";
 import fs from "fs";
 import mongoose from "mongoose";
 import config from "../config/index.js";
-import { uploadImageCloudinary } from "../services/imageUpload.js";
+import { deleteImageCloudinary, uploadImageCloudinary } from "../services/imageUpload.js";
 
 /****************************************************************
  * @GET_ALL_PRODUCTS
@@ -398,6 +398,7 @@ export const updateProductImages = async (req, res) => {
 
           return {
             secure_url: upload.secure_url,
+            public_id: upload.public_id,
           };
         })
       );
@@ -429,4 +430,57 @@ export const updateProductImages = async (req, res) => {
       });
     }
   });
+};
+
+/**
+ * @deleteProductImage
+ * @POST
+ * @ROUTE /api/v1/products/:productId/delete/image
+ * @params productId, imageId, secure_url, public_id 
+ * @description used to delete product image
+ * @returns Product Object
+ *  */  
+export const deleteProductImage = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const imageId = req.body.imageId;
+    const secure_url = req.body.secure_url;
+    const public_id = req.body.public_id;
+
+    if(!imageId) {
+      return res.status(400).json({
+        status: false,
+        message: "Bad request!"
+      });
+    }
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(500).json({
+        success: false,
+        message: "Something went wrong while saving product details",
+      });
+    }
+
+    // delete image from storage
+    await deleteImageCloudinary(public_id);
+
+    product.photos = product.photos.filter(photo=>photo._id != imageId);
+
+    await product.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Product updated.",
+      product,
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Something went wrong, try again later",
+    });
+  }
 };

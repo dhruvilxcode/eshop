@@ -41,7 +41,8 @@ const productSchema = new mongoose.Schema({
             secure_url: {
                 type: String,
                 required: true
-            }
+            },
+            public_id: String,
         }
     ],
     stock: {

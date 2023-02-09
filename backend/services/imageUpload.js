@@ -1,10 +1,9 @@
-import multer from "multer"
-import multerS3 from "multer-s3";
-import s3 from "../config/s3.config.js";
+// import multer from "multer"
+// import multerS3 from "multer-s3";
+// import s3 from "../config/s3.config.js";
 import cloudinary from "../config/cloudinary.config.js"
 
 
-// TODO: complete this
 export const uploadImageCloudinary = async ({file, bucket, filename}) => {
   const res = await cloudinary.uploader.upload(file, {
     folder: bucket,
@@ -12,7 +11,10 @@ export const uploadImageCloudinary = async ({file, bucket, filename}) => {
   });
   return res;
 };
-
+export const deleteImageCloudinary = async (id) => {
+  const res = await cloudinary.uploader.destroy(id);
+  return res;
+};
 
 
 // https://www.npmjs.com/package/multer-s3

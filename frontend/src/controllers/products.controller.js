@@ -65,3 +65,10 @@ export async function updateProductImages(productId, form) {
     const resp = await axios.post(`${API}/products/${productId}/update/images`, form);
     return resp;
 }
+
+export async function deleteProductImage(productId, imageId, secure_url, public_id) {
+    const resp = await axios.post(`${API}/products/${productId}/delete/image`, {
+        imageId, secure_url, public_id
+    });
+    return resp;
+}
