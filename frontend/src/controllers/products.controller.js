@@ -72,3 +72,13 @@ export async function deleteProductImage(productId, imageId, secure_url, public_
     });
     return resp;
 }
+
+/**
+ * @param {string} productId ID of the product to update
+ * */  
+export async function updateProductSizes(productId, sizes) {
+    const resp = await axios.post(`${API}/products/${productId}/update/sizes`, {
+        sizes
+    });
+    return resp;
+}

@@ -484,3 +484,47 @@ export const deleteProductImage = async (req, res) => {
     });
   }
 };
+
+/**
+ * @updateProductSizes
+ * @POST
+ * @ROUTE /api/v1/products/:productId/update/sizes
+ * @params productId, sizes
+ * @description used to update product sizes
+ * @returns Product Object
+ *  */  
+export const updateProductSizes = async (req, res) => {
+  try {
+
+    const productId = req.params.productId;
+    const sizes = req.body?.sizes || [];
+
+    const product = await Product.findOneAndUpdate(
+      {
+        _id: productId,
+      },
+      {
+        sizes
+      }
+    );
+
+    if (!product) {
+      return res.status(500).json({
+        success: false,
+        message: "Something went wrong while saving product details",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Product updated.",
+      product,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Something went wrong, try again later",
+    });
+  }
+};
