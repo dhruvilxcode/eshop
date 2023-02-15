@@ -1,7 +1,13 @@
-import React from 'react'
+import Footer from "@/app/Footer";
+import React from "react";
+import Navbar from "./Navbar";
 
-export default function ProductPageLayout({children}) {
+export default function ProductPageLayout({ children }) {
   return (
-    <>{children}</>
-  )
+    <div>
+      <Navbar />
+      <div className="pt-14">{children}</div>
+      <Footer />
+    </div>
+  );
 }
