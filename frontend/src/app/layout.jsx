@@ -2,9 +2,9 @@
 import "@/styles/globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Poppins } from "@next/font/google";
+import { Poppins, DM_Sans } from "@next/font/google";
 
-const poppins = Poppins({
+const poppins = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
 });
