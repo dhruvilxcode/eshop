@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.className}>
       <head>
-        <title>Admin Dashboard | EShop</title>
+        <title>EShop</title>
         <meta name="robots" content="noindex,nofollow" />
       </head>
       <body>
