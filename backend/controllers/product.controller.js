@@ -12,7 +12,10 @@ import { deleteImageCloudinary, uploadImageCloudinary } from "../services/imageU
  * @RETURNS product array list
  ***************************************************************/
 export const getAllProducts = async (req, res) => {
-  const products = await Product.find({}).populate("collectionId");
+  const products = await Product
+  .find({})
+  .sort({createdAt: 'desc'})
+  .populate("collectionId");
 
   if (!products) {
     return res.status(200).json([]);
