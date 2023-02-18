@@ -61,8 +61,7 @@ export default async function ProductPage({ params, searchParams }) {
 
   return (
     <div className="flex w-full px-10 my-8 gap-8">
-      <div className="w-2/4 h-screen overflow-y-scroll">
-        
+      <div className="w-2/4 ">
         <ImageSwiper images={photos} />
       </div>
       <div className="w-2/4">
