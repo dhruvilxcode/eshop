@@ -1,6 +1,8 @@
 import React from "react";
+
 import { API } from "@/config/api.config";
 import { SITE_CONFIG } from "@/config/site.config";
+import ImageSwiper from "./ImageSwiper";
 
 // // TODO: currently in next/canary as of 14/feb/2023
 // export const metadata = {
@@ -59,12 +61,9 @@ export default async function ProductPage({ params, searchParams }) {
 
   return (
     <div className="flex w-full px-10 my-8 gap-8">
-      <div className="w-2/4 h-screen">
-        <img
-          src={photo1}
-          alt="product photo"
-          className="w-full h-full object-cover rounded-2xl -z-50"
-        />
+      <div className="w-2/4 h-screen overflow-y-scroll">
+        
+        <ImageSwiper images={photos} />
       </div>
       <div className="w-2/4">
         <label className="block mt-2 w-fit border border-eshop-dark text-eshop-dark bg-white rounded-full text-sm px-4 py-1">
