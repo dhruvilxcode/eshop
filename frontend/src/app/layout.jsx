@@ -2,9 +2,9 @@
 import "@/styles/globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Poppins, DM_Sans } from "@next/font/google";
+import { DM_Sans } from "@next/font/google";
 
-const poppins = DM_Sans({
+const DMSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
 });
@@ -15,7 +15,7 @@ export default function RootLayout({
   children,
 }) {
   return (
-    <html lang="en" className={poppins.className}>
+    <html lang="en" className={DMSans.className}>
       <head>
         <title>EShop</title>
         <meta name="robots" content="noindex,nofollow" />

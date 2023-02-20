@@ -11,6 +11,7 @@
   "dependencies": {
     "@next/font": "13.1.4",
     "axios": "^1.2.3",
+    "firebase": "^9.17.1",
     "keen-slider": "^6.8.5",
     "next": "13.1.4",
     "react": "18.2.0",

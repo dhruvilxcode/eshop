@@ -3,33 +3,7 @@ import React from "react";
 import { API } from "@/config/api.config";
 import { SITE_CONFIG } from "@/config/site.config";
 import ImageSwiper from "./ImageSwiper";
-
-// // TODO: currently in next/canary as of 14/feb/2023
-// export const metadata = {
-//   title: 'My Page Title',
-//   description: '',
-//   openGraph: {
-//     title: 'Next.js',
-//     description: 'The React Framework for the Web',
-//     url: 'https://nextjs.org',
-//     siteName: 'Next.js',
-//     images: [
-//       {
-//         url: 'https://nextjs.org/og.png',
-//         width: 800,
-//         height: 600,
-//       },
-//       {
-//         url: 'https://nextjs.org/og-alt.png',
-//         width: 1800,
-//         height: 1600,
-//         alt: 'My custom alt',
-//       },
-//     ],
-//     locale: 'en-US',
-//     type: 'website',
-//   },
-// };
+import AddToCart from "./AddToCart";
 
 /**
  * @param {string} productId ID of product to fetch Product OBJ from Database.
@@ -51,13 +25,14 @@ export default async function ProductPage({ params, searchParams }) {
   const mrp = product.mrp;
   const sku_id = product.sku_id;
   const description = product.description;
-  const sizes = product.sizes;
   const featured = product.featured;
   const photos = product?.photos || [];
   const stock = product.stock;
   const collectionId = product.collectionId;
 
   const photo1 = photos[0]?.secure_url || "";
+
+  
 
   return (
     <div className="flex w-full px-10 my-8 gap-8">
@@ -77,22 +52,7 @@ export default async function ProductPage({ params, searchParams }) {
           {price}
         </p>
 
-        <div className="mt-8">
-          <div className="">
-            Size: <span className="text-gray-400">S</span>
-          </div>
-          <div className="mt-4 flex items-center gap-2">
-            {sizes.map((size, index) => (
-              <div key={index} className="rounded-2xl p-4 border cursor-pointer hover:bg-gray-100 hover:text-gray-600">
-                {size}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <button className="rounded-2xl bg-eshop-dark hover:bg-gray-200 hover:text-gray-500 transition text-white mt-12 text-center px-4 py-6 w-full text-xl">
-          Add to Cart
-        </button>
+        <AddToCart product={product} />
 
         <div className="mt-12 flex w-full items-center justify-center gap-12">
           <button className="flex items-center gap-2">
