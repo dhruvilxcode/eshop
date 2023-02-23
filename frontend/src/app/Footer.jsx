@@ -3,14 +3,14 @@ import React from 'react'
 
 export default function Footer() {
   return (
-     <footer className='w-full bg-eshop-dark text-white flex justify-between gap-14 px-10 py-8'>
+     <footer className='w-full bg-eshop-dark text-white flex flex-col md:flex-row justify-between gap-14 px-10 py-8'>
         <div className='w-96'>
             <img src="/assets/logo-white.svg" alt="logo" className='block' />
             <p className='mt-4'>
             Quality Products only at our shop. explore 45+ designer wear. With team of professional designer we are scaling like never before. We are Proudly Made In India.
             </p>
         </div>
-        <div className='grid grid-cols-2 gap-8'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
             {/* nav links 1 */}
             <div className='flex flex-col gap-5'>
                 <Link href="/" className='block'>
