@@ -18,21 +18,19 @@ export default async function ProductPage({ params, searchParams }) {
 
   const productPromise = getProduct(productId);
   const [productData] = await Promise.all([productPromise]);
-  const product = productData.product;
+  const product = productData?.product;
 
-  const name = product.name;
-  const price = product.price;
-  const mrp = product.mrp;
-  const sku_id = product.sku_id;
-  const description = product.description;
-  const featured = product.featured;
+  const name = product?.name || "";
+  const price = product?.price || "";
+  const mrp = product?.mrp || "";
+  const sku_id = product?.sku_id || "";
+  const description = product?.description || "";
+  const featured = product?.featured || "";
   const photos = product?.photos || [];
-  const stock = product.stock;
-  const collectionId = product.collectionId;
+  const stock = product?.stock || 0;
+  const collectionId = product?.collectionId || "";
 
   const photo1 = photos[0]?.secure_url || "";
-
-  
 
   return (
     <div className="flex w-full px-10 my-8 gap-8">

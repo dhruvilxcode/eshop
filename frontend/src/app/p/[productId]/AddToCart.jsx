@@ -4,7 +4,7 @@ import { addProductToCart } from "@/controllers/cart.controller";
 import { toast } from "react-toastify";
 
 export default function AddToCart({ product }) {
-  const sizes = product.sizes;
+  const sizes = product?.sizes || [];
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(0);
 
   const btnAddProductToCart = () => {

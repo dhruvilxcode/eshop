@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { deleteCartItem, getCartProducts } from "@/controllers/cart.controller";
 import { SITE_CONFIG } from "@/config/site.config";
 import Link from "next/link";
+import Head from "next/head";
 
 export default function CartPage() {
   const [cart, setCart] = useState([]);
@@ -21,6 +22,10 @@ export default function CartPage() {
     setCart(newCartProducts);
   }
 
+  const btnCompleteOrder = () => {
+    //TODO: 
+  }
+
   if (cart.length == 0) {
     return (
       <div className="px-9 py-8 text-center">
@@ -37,6 +42,9 @@ export default function CartPage() {
 
   return (
     <div className="px-9 py-8">
+      <Head>
+        <title>Cart</title>
+      </Head>
       <h1>Cart ({cart.length} Items)</h1>
 
       <div className="flex mt-8 gap-4 flex-col-reverse md:flex-row">
@@ -78,7 +86,7 @@ export default function CartPage() {
               {cartTotal}/-
             </span>
           </div>
-          <button className="text-center w-full bg-eshop-dark hover:bg-gray-800 text-white px-5 py-4 rounded-xl">
+          <button onClick={btnCompleteOrder} className="text-center w-full bg-eshop-dark hover:bg-gray-800 text-white px-5 py-4 rounded-xl">
             Proceed to Payment
           </button>
         </div>
