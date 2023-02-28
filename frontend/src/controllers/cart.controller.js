@@ -45,3 +45,7 @@ export function deleteCartItem(index) {
     localStorage.setItem(LOCALSTORAGE_CART_KEY, JSON.stringify(newCartItems));
     return newCartItems;
 }
+
+export function emptyCart() {
+    localStorage.setItem(LOCALSTORAGE_CART_KEY, JSON.stringify([]));
+}

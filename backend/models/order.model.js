@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import {OrderStatus} from "../utils/orderStatus"
+import {OrderStatus} from "../utils/orderStatus.js"
+import { PaymentStatus } from "../utils/paymentStatus.js";
 
 const orderSchema = new mongoose.Schema({
     products: {
@@ -67,12 +68,21 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    email: {
+        type: String,
+        required: true,
+    },
     amount: {
         type: Number,
         required: true,
     },
     coupon: String,
     transactionId: String, 
+    paymentStatus: {
+        type: String,
+        enum: Object.values(PaymentStatus),
+        default: PaymentStatus.INITIATED,
+    },
     status: {
         type: String,
         enum: Object.values(OrderStatus),

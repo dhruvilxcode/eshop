@@ -11,6 +11,7 @@ import CollectionRoutes from "./routes/collection.js";
 import CouponRoutes from "./routes/coupon.js";
 import ProductRoutes from "./routes/product.js";
 import WishlistRoutes from "./routes/wishlist.js";
+import OrderRoutes from "./routes/order.js";
 // route imports
 
 const app = express();
@@ -29,6 +30,7 @@ app.use("/api/v1/collections", CollectionRoutes);
 app.use("/api/v1/coupons", CouponRoutes);
 app.use("/api/v1/products", ProductRoutes);
 app.use("/api/v1/wishlist", WishlistRoutes);
+app.use("/api/v1/order", OrderRoutes);
 // routes
 
 app.get("/", (req, res) => {

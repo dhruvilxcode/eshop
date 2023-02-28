@@ -22,7 +22,7 @@ export default function AddToCart({ product }) {
           </div>
           <div className="mt-4 flex items-center gap-2">
             {sizes.map((size, index) => (
-              <div>
+              <div key={index}>
                 <input
                   type="radio"
                   className="hidden peer"

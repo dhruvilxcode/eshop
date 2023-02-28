@@ -1,1 +1,3 @@
 export const API = process.env.NEXT_PUBLIC_BACKEND;
+export const STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk_test_51Mc12ISEvQKK7wS0vQDsKlBgA9FXXkelumn4oWhNL2tRshII2NvSiEUX5u0c8TZNXiNBT7jvazk6noHaC7IuH1xy00MteqWVCp';
+export const FRONTEND = process.env.NEXT_PUBLIC_FRONTEND;
